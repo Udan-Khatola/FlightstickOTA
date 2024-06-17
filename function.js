@@ -23,26 +23,25 @@ export default async function main({ req, res, log, error }) {
 
     if (trigger !== 'http') {
         error('Invalid trigger, expected http');
-        return res.send("Invalid trigger", 405);
+        return res.send("Invalid trigger");
     }
 
     if (req.method !== 'POST' && req.method !== 'GET') {
         error('Invalid method, expected POST or GET');
-        return res.send("Invalid method", 405);
+        return res.send("Invalid method");
     }
 
     if (req.method === 'GET') {
         // return the file created in the POST request
-        // const files = await storage.listFiles(BUCKET_ID);
-        // const file = files.files[0];
-        // if (file) {
-        //     const fileData = await storage.getFileView(BUCKET_ID, file.$id);
-        //     return res.send(fileData, 200);
-        // } else {
-        //     error('File not found');
-        //     return res.send("File not found", 404);
-        // }
-        return res.send("GET method not implemented");
+        const files = await storage.listFiles(BUCKET_ID);
+        const file = files.files[0];
+        if (file) {
+            const fileData = await storage.getFileView(BUCKET_ID, file.$id);
+            return res.send(fileData);
+        } else {
+            error('File not found');
+            return res.send("File not found");
+        }
     }
 
     if (req.method === 'POST') {
@@ -52,10 +51,10 @@ export default async function main({ req, res, log, error }) {
 
         if (file.$id) {
             log('File created successfully');
-            return res.send("File created successfully", 200);
+            return res.send("File created successfully");
         } else {
             error('Failed to create file');
-            return res.send("Failed to create file", 500);
+            return res.send("Failed to create file");
         }
     }
 }
