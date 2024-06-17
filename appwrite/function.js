@@ -42,7 +42,7 @@ export default async function main({ req, res, log, error }) {
         //     error('File not found');
         //     return res.send("File not found", 404);
         // }
-        return res.send("GET method not implemented", 200);
+        return res.send("GET method not implemented");
     }
 
     if (req.method === 'POST') {
