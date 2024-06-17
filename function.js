@@ -38,8 +38,9 @@ export default async function main({ req, res, log, error }) {
         const file = files.files[files.files.length - 1];
         if (file) {
             const result = await storage.getFileDownload(BUCKET_ID, file.$id);
-            log(result)
-            return res.send("success");
+            const blob = new Blob([result], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            return res.redirect(url);
         } else {
             error('File not found');
             return res.send("File not found");
