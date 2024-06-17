@@ -18,15 +18,8 @@ const BUCKET_ID = "666996a9000f8aa81832";
  * @returns {Promise<void>} - A promise that resolves when the function is completed.
  */
 export default async function main({ req, res, log, error }) {
-    const SERVER_APPWRITE_ENDPOINT = process.env.SERVER_APPWRITE_ENDPOINT;
-    const PUBLIC_APPWRITE_PROJECT = process.env.PUBLIC_APPWRITE_PROJECT;
-    const APPWRITE_API_KEY = process.env.APPWRITE_API_KEY;
-
-    log("SERVER_APPWRITE_ENDPOINT:" + SERVER_APPWRITE_ENDPOINT);
-    log("PUBLIC_APPWRITE_PROJECT:" + PUBLIC_APPWRITE_PROJECT);
-    log("APPWRITE_API_KEY:" + APPWRITE_API_KEY);
-
-    log(Storage);
+    log(storage);
+    log(storage.listFiles)
 
     const headers = req.headers;
     const trigger = headers['x-appwrite-trigger'];
