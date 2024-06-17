@@ -18,13 +18,19 @@ const BUCKET_ID = "666996a9000f8aa81832";
  * @returns {Promise<void>} - A promise that resolves when the function is completed.
  */
 export default async function main({ req, res, log, error }) {
+    log('Executing function');
+
     const headers = req.headers;
     const trigger = headers['x-appwrite-trigger'];
+
+    log("Checking Trigger")
 
     if (trigger !== 'http') {
         error('Invalid trigger, expected http');
         return res.send("Invalid trigger");
     }
+
+    log("Checking Method")
 
     if (req.method !== 'POST' && req.method !== 'GET') {
         error('Invalid method, expected POST or GET');
@@ -32,6 +38,7 @@ export default async function main({ req, res, log, error }) {
     }
 
     if (req.method === 'GET') {
+        log("GET Request")
         // return the file created in the POST request
         const files = await storage.listFiles(BUCKET_ID);
         const file = files.files[0];
@@ -45,6 +52,7 @@ export default async function main({ req, res, log, error }) {
     }
 
     if (req.method === 'POST') {
+        log("POST Request")
         const OTA_FILE_BYTES = req.bodyRaw;
         const OTA_FILE = new File(new Blob([OTA_FILE_BYTES]), 'firmware.ota', { type: 'application/octet-stream' });
         const file = await storage.createFile(BUCKET_ID, ID.unique(), OTA_FILE);
