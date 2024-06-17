@@ -9,13 +9,12 @@ const SERVER_APPWRITE_ENDPOINT = process.env.SERVER_APPWRITE_ENDPOINT;
 const PUBLIC_APPWRITE_PROJECT = process.env.PUBLIC_APPWRITE_PROJECT;
 const APPWRITE_API_KEY = process.env.APPWRITE_API_KEY;
 
-const client = new Client();
+const client = new Client()
+    .setEndpoint(SERVER_APPWRITE_ENDPOINT || '')
+    .setProject(PUBLIC_APPWRITE_PROJECT || '')
+    .setKey(APPWRITE_API_KEY || '');
 
 export const storage = new Storage(client);
 
 
-client
-    .setEndpoint(SERVER_APPWRITE_ENDPOINT || '')
-    .setProject(PUBLIC_APPWRITE_PROJECT || '')
-    .setKey(APPWRITE_API_KEY || '');
 

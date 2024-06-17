@@ -18,9 +18,6 @@ const BUCKET_ID = "666996a9000f8aa81832";
  * @returns {Promise<void>} - A promise that resolves when the function is completed.
  */
 export default async function main({ req, res, log, error }) {
-    log(storage);
-    log(storage.listFiles)
-
     const headers = req.headers;
     const trigger = headers['x-appwrite-trigger'];
 
