@@ -35,12 +35,11 @@ export default async function main({ req, res, log, error }) {
         log("GET Request")
         // return the file created in the POST request
         const files = await storage.listFiles(BUCKET_ID);
-        log(files);
-        const file = files.files[0];
-        log(file);
+        const file = files.files[files.files.length - 1];
         if (file) {
-            const fileData = await storage.getFileView(BUCKET_ID, file.$id);
-            return res.send(fileData);
+            const result = await storage.getFileDownload(BUCKET_ID, file.$id);
+            log(result)
+            return res.send("success");
         } else {
             error('File not found');
             return res.send("File not found");
