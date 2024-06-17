@@ -18,19 +18,13 @@ const BUCKET_ID = "666996a9000f8aa81832";
  * @returns {Promise<void>} - A promise that resolves when the function is completed.
  */
 export default async function main({ req, res, log, error }) {
-    log('Executing function');
-
     const headers = req.headers;
     const trigger = headers['x-appwrite-trigger'];
-
-    log("Checking Trigger")
 
     if (trigger !== 'http') {
         error('Invalid trigger, expected http');
         return res.send("Invalid trigger");
     }
-
-    log("Checking Method")
 
     if (req.method !== 'POST' && req.method !== 'GET') {
         error('Invalid method, expected POST or GET');
@@ -41,7 +35,9 @@ export default async function main({ req, res, log, error }) {
         log("GET Request")
         // return the file created in the POST request
         const files = await storage.listFiles(BUCKET_ID);
+        log(files);
         const file = files.files[0];
+        log(file);
         if (file) {
             const fileData = await storage.getFileView(BUCKET_ID, file.$id);
             return res.send(fileData);
