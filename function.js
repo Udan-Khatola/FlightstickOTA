@@ -1,5 +1,6 @@
 import { ID } from 'node-appwrite';
 import { storage, SERVER_APPWRITE_ENDPOINT, PUBLIC_APPWRITE_PROJECT } from './index.js';
+import { InputFile } from 'node-appwrite/file';
 
 /**
  * Represents the context object.
@@ -47,8 +48,7 @@ export default async function main({ req, res, log, error }) {
     if (req.method === 'POST') {
         log("POST Request")
         const OTA_FILE_BYTES = req.bodyRaw;
-        const OTA_FILE = new File(new Blob([OTA_FILE_BYTES]), 'firmware.ota', { type: 'application/octet-stream' });
-        const file = await storage.createFile(BUCKET_ID, ID.unique(), OTA_FILE);
+        const file = await storage.createFile(BUCKET_ID, ID.unique(), InputFile.fromBuffer(new Blob([OTA_FILE_BYTES], { type: 'application/octet-stream' }), 'ota.bin'));
 
         if (file.$id) {
             log('File created successfully');
