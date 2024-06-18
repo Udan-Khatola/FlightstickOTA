@@ -21,6 +21,7 @@ const BUCKET_ID = "666996a9000f8aa81832";
 export default async function main({ req, res, log, error }) {
     const headers = req.headers;
     const trigger = headers['x-appwrite-trigger'];
+    const params = req.query;
 
     if (trigger !== 'http') {
         error('Invalid trigger, expected http');
@@ -47,8 +48,9 @@ export default async function main({ req, res, log, error }) {
 
     if (req.method === 'POST') {
         log("POST Request")
+        const name = params.name + "-" + params.version
         const OTA_FILE_BYTES = req.bodyRaw;
-        const file = await storage.createFile(BUCKET_ID, ID.unique(), InputFile.fromBuffer(new Blob([OTA_FILE_BYTES], { type: 'application/octet-stream' }), 'ota.bin'));
+        const file = await storage.createFile(BUCKET_ID, ID.unique(), InputFile.fromBuffer(new Blob([OTA_FILE_BYTES], { type: 'application/octet-stream' }), name));
 
         if (file.$id) {
             log('File created successfully');
