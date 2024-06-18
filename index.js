@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // env variables
-const SERVER_APPWRITE_ENDPOINT = process.env.SERVER_APPWRITE_ENDPOINT;
-const PUBLIC_APPWRITE_PROJECT = process.env.PUBLIC_APPWRITE_PROJECT;
+export const SERVER_APPWRITE_ENDPOINT = process.env.SERVER_APPWRITE_ENDPOINT;
+export const PUBLIC_APPWRITE_PROJECT = process.env.PUBLIC_APPWRITE_PROJECT;
 const APPWRITE_API_KEY = process.env.APPWRITE_API_KEY;
 
 const client = new Client()

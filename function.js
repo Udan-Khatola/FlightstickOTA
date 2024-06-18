@@ -1,5 +1,5 @@
 import { ID } from 'node-appwrite';
-import { storage } from './index.js';
+import { storage, SERVER_APPWRITE_ENDPOINT, PUBLIC_APPWRITE_PROJECT } from './index.js';
 
 /**
  * Represents the context object.
@@ -36,9 +36,8 @@ export default async function main({ req, res, log, error }) {
         const files = await storage.listFiles(BUCKET_ID);
         const file = files.files[files.files.length - 1];
         if (file) {
-            const buffer = await storage.getFileDownload(BUCKET_ID, file.$id);
-            log(buffer)
-            return res.send(buffer);
+            const url = `${SERVER_APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/download?project=${PUBLIC_APPWRITE_PROJECT}`
+            return res.redirect(url);
         } else {
             error('File not found');
             return res.send("File not found");
