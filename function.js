@@ -37,6 +37,7 @@ export default async function main({ req, res, log, error }) {
         const file = files.files[files.files.length - 1];
         if (file) {
             const buffer = await storage.getFileDownload(BUCKET_ID, file.$id);
+            log(buffer)
             return res.send(buffer);
         } else {
             error('File not found');
