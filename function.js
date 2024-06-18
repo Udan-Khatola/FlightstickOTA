@@ -24,8 +24,8 @@ export default async function main({ req, res, log, error }) {
     const params = req.query;
 
     if (trigger !== 'http') {
-        error('Invalid trigger, expected http');
-        return res.send("Invalid trigger");
+        error('Invalid trigger, expected http, received ' + trigger);
+        return res.send("Invalid trigger", trigger);
     }
 
     if (req.method !== 'POST' && req.method !== 'GET') {
@@ -48,7 +48,7 @@ export default async function main({ req, res, log, error }) {
 
     if (req.method === 'POST') {
         log("POST Request")
-        const name = params.name + "-" + params.version
+        const name = params.name + "-" + params.version + ".bin";
         const OTA_FILE_BYTES = req.bodyRaw;
         const file = await storage.createFile(BUCKET_ID, ID.unique(), InputFile.fromBuffer(new Blob([OTA_FILE_BYTES], { type: 'application/octet-stream' }), name));
 
