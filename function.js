@@ -23,11 +23,6 @@ export default async function main({ req, res, log, error }) {
     const trigger = headers['x-appwrite-trigger'];
     const params = req.query;
 
-    if (trigger !== 'http') {
-        error('Invalid trigger, expected http, received ' + trigger);
-        return res.send("Invalid trigger", trigger);
-    }
-
     if (req.method !== 'POST' && req.method !== 'GET') {
         error('Invalid method, expected POST or GET');
         return res.send("Invalid method");
