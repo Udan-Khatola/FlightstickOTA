@@ -48,8 +48,8 @@ export default async function main({ req, res, log, error }) {
         const file = await storage.createFile(BUCKET_ID, ID.unique(), InputFile.fromBuffer(new Blob([OTA_FILE_BYTES], { type: 'application/octet-stream' }), name));
 
         if (file.$id) {
-            log('File created successfully');
-            return res.send("File created successfully");
+            log('File ' + name + ' created successfully');
+            return res.send('File ' + name + ' created successfully');
         } else {
             error('Failed to create file');
             return res.send("Failed to create file");
