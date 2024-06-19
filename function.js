@@ -19,9 +19,8 @@ const BUCKET_ID = "666996a9000f8aa81832";
  * @returns {Promise<void>} - A promise that resolves when the function is completed.
  */
 export default async function main({ req, res, log, error }) {
-    const headers = req.headers;
-    const trigger = headers['x-appwrite-trigger'];
     const params = req.query;
+    log(req.method + ' Request')
 
     if (req.method !== 'POST' && req.method !== 'GET') {
         error('Invalid method, expected POST or GET');
@@ -29,7 +28,7 @@ export default async function main({ req, res, log, error }) {
     }
 
     if (req.method === 'GET') {
-        log("GET Request")
+        log("Handling GET Request")
         const files = await storage.listFiles(BUCKET_ID);
         const file = files.files[files.files.length - 1];
         if (file) {
@@ -42,7 +41,7 @@ export default async function main({ req, res, log, error }) {
     }
 
     if (req.method === 'POST') {
-        log("POST Request")
+        log("Handling POST Request")
         const name = params.name + "-" + params.version + ".bin";
         const OTA_FILE_BYTES = req.bodyRaw;
         const file = await storage.createFile(BUCKET_ID, ID.unique(), InputFile.fromBuffer(new Blob([OTA_FILE_BYTES], { type: 'application/octet-stream' }), name));
