@@ -21,6 +21,7 @@ const BUCKET_ID = "666996a9000f8aa81832";
 export default async function main({ req, res, log, error }) {
     const params = req.query;
     log(req.method + ' Request')
+    log(JSON.stringify(req.headers));
 
     if (req.method !== 'POST' && req.method !== 'GET') {
         error('Invalid method, expected POST or GET');
