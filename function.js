@@ -43,7 +43,7 @@ export default async function main({ req, res, log, error }) {
 
     if (req.method === 'POST') {
         log("Handling POST Request")
-        const name = params.name + "-" + params.version + ".bin";
+        const name = params.name + "-" + params.version + ".ota";
         const OTA_FILE_BYTES = req.bodyRaw;
         const file = await storage.createFile(BUCKET_ID, ID.unique(), InputFile.fromBuffer(new Blob([OTA_FILE_BYTES], { type: 'application/octet-stream' }), name));
 
