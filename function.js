@@ -17,9 +17,7 @@ const BUCKET_ID = "666996a9000f8aa81832";
  * @returns {Promise<void>} - A promise that resolves when the function is completed.
  */
 export default async function main({ req, res, log, error }) {
-    const params = req.query;
     log(req.method + ' Request')
-    log(JSON.stringify(req.headers));
 
     if (req.method !== 'GET') {
         error('Invalid method, expected GET');
@@ -28,16 +26,30 @@ export default async function main({ req, res, log, error }) {
 
     if (req.method === 'GET') {
         log("Handling GET Request")
-        const files = await storage.listFiles(BUCKET_ID);
-        log(files)
-        const file = files.files[files.total - 1];
-        log(file.name)
-        if (file) {
-            const url = `${SERVER_APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/download?project=${PUBLIC_APPWRITE_PROJECT}`
-            return res.redirect(url);
-        } else {
-            error('File not found');
-            return res.send("File not found");
-        }
+
+        const path = req.path
+        log(path)
     }
+}
+
+
+async function handleFileRequest() {
+    const files = await storage.listFiles(BUCKET_ID);
+    const file = files.files[files.total - 1];
+    if (file) {
+        const url = `${SERVER_APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/download?project=${PUBLIC_APPWRITE_PROJECT}`
+        return res.redirect(url);
+    } else {
+        error('File not found');
+        return res.send("File not found");
+    }
+}
+
+async function handleLatestVersionRequest() {
+    const files = await storage.listFiles(BUCKET_ID);
+    const file = files.files[files.total - 1];
+
+    // File name example - FlightStick-0_2.ota
+    const version = file.name.split('-')[1].split('.')[0].replace('_', '.');
+    return res.send(version);
 }
