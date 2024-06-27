@@ -29,7 +29,7 @@ export default async function main({ req, res, log, error }) {
     if (req.method === 'GET') {
         log("Handling GET Request")
         const files = await storage.listFiles(BUCKET_ID);
-        const file = files.files[0];
+        const file = files.files[files.total - 1];
         if (file) {
             const url = `${SERVER_APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/download?project=${PUBLIC_APPWRITE_PROJECT}`
             return res.redirect(url);
