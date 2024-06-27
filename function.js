@@ -1,6 +1,4 @@
-import { ID } from 'node-appwrite';
 import { storage, SERVER_APPWRITE_ENDPOINT, PUBLIC_APPWRITE_PROJECT } from './index.js';
-import { InputFile } from 'node-appwrite/file';
 
 /**
  * Represents the context object.
@@ -23,36 +21,21 @@ export default async function main({ req, res, log, error }) {
     log(req.method + ' Request')
     log(JSON.stringify(req.headers));
 
-    if (req.method !== 'POST' && req.method !== 'GET') {
-        error('Invalid method, expected POST or GET');
+    if (req.method !== 'GET') {
+        error('Invalid method, expected GET');
         return res.send("Invalid method");
     }
 
     if (req.method === 'GET') {
         log("Handling GET Request")
         const files = await storage.listFiles(BUCKET_ID);
-        const file = files.files[files.files.length - 1];
+        const file = files.files[0];
         if (file) {
             const url = `${SERVER_APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/download?project=${PUBLIC_APPWRITE_PROJECT}`
             return res.redirect(url);
         } else {
             error('File not found');
             return res.send("File not found");
-        }
-    }
-
-    if (req.method === 'POST') {
-        log("Handling POST Request")
-        const name = params.name + "-" + params.version + ".ota";
-        const OTA_FILE_BYTES = req.bodyRaw;
-        const file = await storage.createFile(BUCKET_ID, ID.unique(), InputFile.fromBuffer(new Blob([OTA_FILE_BYTES], { type: 'application/octet-stream' }), name));
-
-        if (file.$id) {
-            log('File ' + name + ' created successfully');
-            return res.send('File ' + name + ' created successfully');
-        } else {
-            error('Failed to create file');
-            return res.send("Failed to create file");
         }
     }
 }
