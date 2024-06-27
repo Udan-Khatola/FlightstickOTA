@@ -31,15 +31,15 @@ export default async function main({ req, res, log, error }) {
         log(path)
 
         if (path === '/latest-version') {
-            return handleLatestVersionRequest();
+            return handleLatestVersionRequest(res);
         }
 
-        return handleFileRequest();
+        return handleFileRequest(res);
     }
 }
 
 
-async function handleFileRequest() {
+async function handleFileRequest(res) {
     const files = await storage.listFiles(BUCKET_ID);
     const file = files.files[files.total - 1];
     if (file) {
@@ -51,7 +51,7 @@ async function handleFileRequest() {
     }
 }
 
-async function handleLatestVersionRequest() {
+async function handleLatestVersionRequest(res) {
     const files = await storage.listFiles(BUCKET_ID);
     const file = files.files[files.total - 1];
 
