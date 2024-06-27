@@ -29,6 +29,12 @@ export default async function main({ req, res, log, error }) {
 
         const path = req.path
         log(path)
+
+        if (path === '/latest-version') {
+            return handleLatestVersionRequest();
+        }
+
+        return handleFileRequest();
     }
 }
 
