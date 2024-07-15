@@ -44,6 +44,10 @@ async function handleFileRequest(res) {
     const file = files.files[files.total - 1];
     if (file) {
         const url = `${SERVER_APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/download?project=${PUBLIC_APPWRITE_PROJECT}`
+
+        res.setHeader('Content-Length', fileSize);
+        res.setHeader('Content-Type', 'application/octet-stream');
+
         return res.redirect(url);
     } else {
         error('File not found');
