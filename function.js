@@ -45,7 +45,7 @@ async function handleFileRequest(res) {
     if (file) {
         const url = `${SERVER_APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/download?project=${PUBLIC_APPWRITE_PROJECT}`;
 
-        return res.redirect(url);
+        return res.redirect(url, { "Content-Length": file.sizeOriginal });
     } else {
         error('File not found');
         return res.send("File not found");
