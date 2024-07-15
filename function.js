@@ -45,7 +45,7 @@ async function handleFileRequest(res) {
     if (file) {
         const url = `${SERVER_APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/download?project=${PUBLIC_APPWRITE_PROJECT}`
 
-        res.setHeader('Content-Length', fileSize);
+        res.setHeader('Content-Length', file.sizeOriginal);
         res.setHeader('Content-Type', 'application/octet-stream');
 
         return res.redirect(url);
